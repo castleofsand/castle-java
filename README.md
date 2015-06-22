@@ -92,7 +92,7 @@ To test the API all the endpoints have their own INTTest. Just set the system en
 All Object collections returns a list of 30 items with the getPage() method and fetched the next page with the fetchNextPage() method.
 
 ### Exception handling
-All errors returned from the api rais an CastleException.
+All errors returned from the api raise an CastleException.
 
 This exception contains the error details and the response code returned from the api.
 For details about the different error codes look here https://api.castle.io/#errors
@@ -244,7 +244,7 @@ Not implemented.
 
 Not implemented.
 
-## Configration
+## Configuration
 
 ### HTTP
 

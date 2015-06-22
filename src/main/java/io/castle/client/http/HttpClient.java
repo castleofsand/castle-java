@@ -153,7 +153,7 @@ public class HttpClient {
 	try {
 	    stream = conn.getOutputStream();
 	    if (logger.isDebugEnabled()) {
-		logger.trace(String.format("api server request --\n%s\n-- ", objectMapper.writeValueAsString(entity)));
+            logger.trace(String.format("api server request --\n%s\n-- ", objectMapper.writeValueAsString(entity)));
 	    }
 	    objectMapper.writeValue(stream, entity);
 	} finally {
@@ -263,14 +263,15 @@ public class HttpClient {
 	headers.put("Accept-Charset", UTF_8);
 	headers.put("Accept", APPLICATION_JSON);
 	if(Castle.isDisableTracking()) {
-	    headers.put("X-Userbin-Do-Not-Track", "1");
+	    headers.put("X-Castle-Do-Not-Track", "1");
 	}
 	if(this.session != null) {
-	    headers.put("X-Userbin-Session-Token", this.session.getToken());
+	    headers.put("X-Castle-Session-Token", this.session.getToken());
 	}
 	if(this.info != null) {
-	    headers.put("X-Userbin-Ip", this.info.getIp());
-	    headers.put("X-Userbin-User-Agent", this.info.getUserAgent());
+	    headers.put("X-Castle-Ip", this.info.getIp());
+	    headers.put("X-Castle-User-Agent", this.info.getUserAgent());
+	    headers.put("X-Castle-Cookie-Id", this.info.getCookieId());
 	}
 	return headers;
     }
