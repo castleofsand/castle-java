@@ -21,7 +21,9 @@ public class EventINTTest extends GenericINTTest {
         Event event = new Event();
         event.setUserId("1234");
         event.setName(Event.EventName.LOGIN_SUCCEEDED);
-        Event.setUserInfoHeader(userHeader).trackEvent(event);
+        Event returnedEvent = Event.setUserInfoHeader(userHeader).trackEvent(event);
+        assertNotNull(returnedEvent.getId());
+        assertNotNull(returnedEvent.getCreatedAt());
     }
 
 

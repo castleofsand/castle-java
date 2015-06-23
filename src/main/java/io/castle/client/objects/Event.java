@@ -203,11 +203,12 @@ public class Event extends BaseRequesterObject {
             return new EventCollection(page, path, query, this.info, this.session);
         }
 
-        public Event trackEvent(Event event){
+        public Event trackEvent(Event event) {
             String path = "events";
             URI eventUri = UriBuilder.newBuilder().path(path, false).build();
             HttpClient client = new HttpClient(eventUri, this.info, this.session);
-            Event resultEvent = client.post(new TypeReference<Event>() {}, event);
+            Event resultEvent = client.post(new TypeReference<Event>() {
+            }, event);
             return resultEvent;
         }
 
