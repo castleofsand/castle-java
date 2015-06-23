@@ -272,7 +272,7 @@ public class HttpClient {
 
     private Map<String, String> createHeaders() {
         headers.put("User-Agent", USER_AGENT);
-        headers.put("X-Castle-Client-User-Agent ", CLIENT_AGENT_DETAILS);
+        headers.put("X-Castle-Client-User-Agent", CLIENT_AGENT_DETAILS);
 
         headers.put("Accept-Charset", UTF_8);
         headers.put("Accept", APPLICATION_JSON);
