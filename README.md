@@ -38,7 +38,7 @@ and add the project declaration to your `pom.xml`:
 	<dependency>
         <groupId>io.castle</groupId>
         <artifactId>castle-java</artifactId>
-        <version>0.5.0-SNAPSHOT</version>
+        <version>0.1.0-SNAPSHOT</version>
     </dependency>
 ```
 
