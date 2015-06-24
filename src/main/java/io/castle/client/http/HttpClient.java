@@ -286,6 +286,7 @@ public class HttpClient {
             headers.put("X-Castle-Ip", this.info.getIp());
             headers.put("X-Castle-User-Agent", this.info.getUserAgent());
             headers.put("X-Castle-Cookie-Id", this.info.getCookieId());
+            headers.put("X-Castle-Headers", this.info.getHeaders());
         }
         return headers;
     }
