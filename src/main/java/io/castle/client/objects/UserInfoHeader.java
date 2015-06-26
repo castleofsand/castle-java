@@ -2,10 +2,14 @@ package io.castle.client.objects;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import io.castle.client.http.MapperSupport;
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.Cookie;
@@ -92,7 +96,6 @@ public class UserInfoHeader {
         UserInfoHeader infoHeader = new UserInfoHeader();
         infoHeader.setIpFromRequest(request);
         infoHeader.setCookieIdFromRequest(request);
-        infoHeader.setUserAgentFromRequest(request);
         infoHeader.setHeadersFromRequest(request);
         return infoHeader;
     }
@@ -105,6 +108,10 @@ public class UserInfoHeader {
     }
 
     public void setCookieIdFromRequest(HttpServletRequest request) {
+        if (request.getCookies() == null) {
+            setCookieId(null);
+            return;
+        }
         Optional<Cookie> cookie = Iterators.tryFind(Iterators.forArray(request.getCookies()), new Predicate<Cookie>() {
             @Override
             public boolean apply(Cookie cookie) {
@@ -113,27 +120,31 @@ public class UserInfoHeader {
         });
         if (cookie.isPresent()) {
             setCookieId(cookie.get().getValue());
-        }else{
+        } else {
             setCookieId(null);
         }
     }
 
-    public void setUserAgentFromRequest(HttpServletRequest request) {
-        setUserAgent(request.getHeader("User-Agent"));
-    }
-
     public void setHeadersFromRequest(HttpServletRequest request) {
-        List<String> scrubHeaders = Arrays.asList("Cookie");
-        Map<String,String> headersMap = new HashMap<>();
+        List<String> scrubHeaders = Arrays.asList("cookie");
+        Map<String, String> headersMap = new HashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()){
+        while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
-            if(scrubHeaders.contains(headerName)){
+            if (scrubHeaders.contains(headerName.toLowerCase())) {
                 continue;
             }
             // TODO: see if we need to normalize header names like we do in ruby
+            // for now we split on '-', capitalize and join again
             // https://github.com/castle/castle-ruby/blob/master/lib/castle-rb/client.rb#L40
-            headersMap.put(headerName, request.getHeader(headerName));
+            String normalizeHeaderName = Joiner.on("-").join(Lists.transform(Arrays.asList(headerName.split("-")),
+                    new Function<String, String>() {
+                        @Override
+                        public String apply(String part) {
+                            return WordUtils.capitalize(part);
+                        }
+                    }));
+            headersMap.put(normalizeHeaderName, request.getHeader(headerName));
         }
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
